@@ -1,0 +1,134 @@
+<mujoco model="quadrotor">
+    <compiler inertiafromgeom="true"/>
+    <asset>
+        <texture type="skybox" builtin="gradient" rgb1="1 1 1"
+            rgb2=".6 .8 1" width="256" height="256"/>
+    </asset>
+    <visual>
+        <global offwidth='1920' offheight='1080'/>
+    </visual>
+    <option timestep="0.01" density="1.2" gravity="0 0 -9.81"/>
+    <worldbody>
+        <light pos="5 5 6" dir="-1 -1 -1" castshadow="false" diffuse=".3 .3 .3"/>
+        <light pos="-5 -5 6" dir="1 1 -1" castshadow="false" diffuse=".3 .3 .3"/>
+
+        <geom name="floor" type="plane" size="5 5 .1" rgba="1 0 0 .5"/>
+        <!-- <site name="origin" type="sphere" size=".1" rgba="0 0 0 1"/>
+        <site name="posx" type="sphere" size=".1" pos=".2 0 0" rgba="0 0 1 1"/>
+        <site name="posy" type="sphere" size=".1" pos="0 .2 0" rgba="0 1 0 1"/> -->
+
+        <camera name="fixed_camera" mode="fixed" pos="-11 0 7" euler="0 -65 -90"/>
+
+        <!-- Walls -->
+        <body pos="0 0 3" name="roof">
+            <geom type="box" size="2.2 2.2 .05" rgba="1 1 1 0.2"/>
+        </body>
+        <body pos="0 2 1.5" name="wall1">
+            <geom type="box" size="2.2 0.01 1.7" rgba="1 1 1 0.2"/>
+        </body>
+        <body pos="0 -2 1.5" name="wall2">
+            <geom type="box" size="2.2 0.01 1.7" rgba="1 1 1 0.2"/>
+        </body>
+        <body pos="2 0 1.5" name="wall3">
+            <geom type="box" size="0.01 2.2 1.7" rgba="1 1 1 0.2"/>
+        </body>
+        <body pos="-2 0 1.5" name="wall4">
+            <geom type="box" size="0.01 2.2 1.7" rgba="1 1 1 0.2"/>
+        </body>
+
+        <!-- Quadrotor -->
+        <body pos="0 0 1.5" name="quad">
+            <joint type="free" pos="0 0 0"/>
+            <geom name="quadbody" type="box" size=".1 .1 .01" mass="0.1" rgba=".2 .9 .9 1"/>
+            <site name="quadcenter" type="box" size=".001 .001 .003" rgba=".2 .9 .9 0"/>
+            <site name="prox-n" group="3" type="box" pos=".1 0 0" size="0.001 .001 .003" euler="0 90 0" rgba="1 0 0 1"/>
+            <site name="prox-s" group="3" type="box" pos="-.1 0 0" size="0.001 .001 .003" euler="0 -90 0" rgba="1 0 0 1"/>
+            <site name="prox-e" group="3" type="box" pos="0 .1 0" size="0.001 .001 .003" euler="-90 0 0" rgba="1 0 0 1"/>
+            <site name="prox-w" group="3" type="box" pos="0 -.1 0" size="0.001 .001 .003" euler="90 0 0" rgba="1 0 0 1"/>
+            <site name="prox-top" group="3" type="box" pos="0 0 .01" size="0.001 .001 .003" rgba="1 0 0 1"/>
+            <site name="prox-bot" group="3" type="box" pos="0 0 -.01" size=".001 .001 .003" euler="180 0 0" rgba="1 0 0 1"/>
+
+            <body pos=".1 .1 0" name="quadarm1" euler="0 0 45">
+                <geom name="arm1" type="box" pos="0 0 0" size=".1 .01 .005" mass=".01"/>
+                <geom name="rotor1" type="cylinder" pos=".1 .0 0.005" size=".05 .002" rgba="0 0 1 1" mass="0.0025"/>
+                <site name="motor1" type="cylinder" pos=".1 .0 0" size=".05 .002" rgba="0 0 0 0"/>
+                <site name="prox-ne1" group="3" type="box" pos=".05 .01 0" size="0.001 .001 .001" euler="-90 0 0" rgba="1 0 0 1"/>
+                <site name="prox-ne2" group="3" type="box" pos=".05 -.01 0" size="0.001 .001 .001" euler="90 0 0" rgba="1 0 0 1"/>
+                <!-- <site name="prox-ne" group="4" type="box" pos=".1 0 0" size="0.001 .001 .001" euler="0 90 0" rgba="1 0 0 1"/> -->
+            </body>
+            <body pos="-0.1 .1 0" name="quadarm2" euler="0 0 -45">
+                <geom name='arm2' type="box" pos="0 0 0" size=".1 .01 .005" mass="0.01"/>
+                <geom name="rotor2" type="cylinder" pos="-0.1 0 0.005" size=".05 .002" rgba="0 0 1 1" mass="0.0025"/>
+                <site name="motor2" type="cylinder" pos="-0.1 0 0" size=".05 .002" rgba="0 0 0 0"/>
+                <site name="prox-se1" group="3" type="box" pos="-.05 .01 0" size="0.001 .001 .001" euler="-90 0 0" rgba="1 0 0 1"/>
+                <site name="prox-se2" group="3" type="box" pos="-.05 -.01 0" size="0.001 .001 .001" euler="90 0 0" rgba="1 0 0 1"/>
+                <!-- <site name="prox-se" group="4" type="box" pos="-.1 0 0" size="0.001 .001 .001" euler="0 -90 0" rgba="1 0 0 1"/> -->
+            </body>
+            <body pos="-0.1 -0.1 0" name="quadarm3" euler="0 0 45">
+                <geom name='arm3' type="box" pos="0 0 0" size="0.1 0.01 0.005" mass="0.01"/>
+                <geom name="rotor3" type="cylinder" pos="-0.1 0 0.005" size=".05 .002" rgba="0 0 1 1" mass="0.0025"/>
+                <site name="motor3" type="cylinder" pos="-0.1 0 0" size=".05 .002" rgba="0 0 0 0"/>
+                <site name="prox-sw1" group="3" type="box" pos="-.05 .01 0" size="0.001 .001 .001" euler="-90 0 0" rgba="1 0 0 1"/>
+                <site name="prox-sw2" group="3" type="box" pos="-.05 -.01 0" size="0.001 .001 .001" euler="90 0 0" rgba="1 0 0 1"/>
+                <!-- <site name="prox-sw" group="4" type="box" pos="-.1 0 0" size="0.001 .001 .001" euler="0 -90 0" rgba="1 0 0 1"/> -->
+            </body>
+            <body pos=".1 -0.1 0" name="quadarm4" euler="0 0 -45">
+                <geom name='arm4' type="box" pos="0 0 0" size=".1 0.01 0.005" mass="0.01"/>
+                <geom name="rotor4" type="cylinder" pos=".1 0 0.005" size=".05 .002" rgba="0 0 1 1" mass="0.0025"/>
+                <site name="motor4" type="cylinder" pos=".1 0 0" size=".05 .002" rgba="0 0 0 0"/>
+                <site name="prox-nw1" group="3" type="box" pos=".05 .01 0" size="0.001 .001 .001" euler="-90 0 0" rgba="1 0 0 1"/>
+                <site name="prox-nw2" group="3" type="box" pos=".05 -.01 0" size="0.001 .001 .001" euler="90 0 0" rgba="1 0 0 1"/>
+                <!-- <site name="prox-nw" group="4" type="box" pos=".1 0 0" size="0.001 .001 .001" euler="0 90 0" rgba="1 0 0 1"/> -->
+            </body>
+        </body>
+    </worldbody>
+
+    <!-- Rotors -->
+    <actuator>
+        <motor ctrllimited="true" ctrlrange="0.0 1.0" gear="0 0. 1. 0. 0. -0.1" site="motor1"/>
+        <motor ctrllimited="true" ctrlrange="0.0 1.0" gear="0 0. 1. 0. 0. 0.1" site="motor2"/>
+        <motor ctrllimited="true" ctrlrange="0.0 1.0" gear="0 0. 1. 0. 0. -0.1" site="motor3"/>
+        <motor ctrllimited="true" ctrlrange="0.0 1.0" gear="0 0. 1. 0. 0. 0.1" site="motor4"/>
+    </actuator>
+
+    <!-- Proximity Sensors -->
+    <sensor>
+        <accelerometer name='acc' site="quadcenter"/>
+        <gyro name='gyro' site="quadcenter"/>
+        <rangefinder name="prox-n" cutoff="3" site="prox-n"/>
+        <rangefinder cutoff="3" site="prox-s"/>
+        <rangefinder cutoff="3" site="prox-e"/>
+        <rangefinder cutoff="3" site="prox-w"/>
+        <rangefinder cutoff="3" site="prox-top"/>
+        <rangefinder cutoff="3" site="prox-bot"/>
+        <!-- <rangefinder cutoff="3" site="prox-ne"/> -->
+        <rangefinder cutoff="3" site="prox-ne1"/>
+        <rangefinder cutoff="3" site="prox-ne2"/>
+        <!-- <rangefinder cutoff="3" site="prox-se"/> -->
+        <rangefinder cutoff="3" site="prox-se1"/>
+        <rangefinder cutoff="3" site="prox-se2"/>
+        <!-- <rangefinder cutoff="3" site="prox-sw"/> -->
+        <rangefinder cutoff="3" site="prox-sw1"/>
+        <rangefinder cutoff="3" site="prox-sw2"/>
+        <!-- <rangefinder cutoff="3" site="prox-nw"/> -->
+        <rangefinder cutoff="3" site="prox-nw1"/>
+        <rangefinder name='prox-nw2' cutoff="3" site="prox-nw2"/>
+    </sensor>
+
+    <!-- Collisions between walls and roof is excluded from calculation -->
+    <!-- This should prevent unnecessary computation -->
+    <contact>
+        <exclude body1="roof" body2="wall1"/>
+        <exclude body1="roof" body2="wall2"/>
+        <exclude body1="roof" body2="wall3"/>
+        <exclude body1="roof" body2="wall4"/>
+        <exclude body1="wall1" body2="wall3"/>
+        <exclude body1="wall1" body2="wall4"/>
+        <exclude body1="wall4" body2="wall2"/>
+        <exclude body1="wall3" body2="wall2"/>
+        <exclude body1="quad" body2="quadarm1"/>
+        <exclude body1="quad" body2="quadarm2"/>
+        <exclude body1="quad" body2="quadarm3"/>
+        <exclude body1="quad" body2="quadarm4"/>
+    </contact>
+</mujoco>
