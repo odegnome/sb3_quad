@@ -8,4 +8,4 @@ axis uncontrollably.
 
 ## Performance after training for 500k time-steps
 
-https://github.com/odegnome/sb3_quad/blob/70e5ca4f52939106ca8389b1135dde0c84101bd8/500k.mp4
+![](https://github.com/odegnome/sb3_quad/blob/70e5ca4f52939106ca8389b1135dde0c84101bd8/500k.mp4)
