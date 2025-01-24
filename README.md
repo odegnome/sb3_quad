@@ -8,5 +8,7 @@ axis uncontrollably.
 
 ## Performance after training for 500k time-steps
 
+There is a glitch in the video below due to incorrect use of ffmpeg for converting images to mp4. Please ignore!
+
 https://github.com/user-attachments/assets/e1aca736-3fb0-4e03-85ce-7df2cd698cc4
 
