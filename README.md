@@ -6,3 +6,6 @@ algorithm to train and also, yaw axis acceleration is also a consideration in th
 The yaw axis reward was necessary because otherwise, the quadrotor was spinning about that
 axis uncontrollably.
 
+## Performance after training for 500k time-steps
+
+![quadrotor-after-training-for-500k](500k.mp4)
